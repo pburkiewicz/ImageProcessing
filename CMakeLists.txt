@@ -10,7 +10,7 @@ message(STATUS "OpenCV library status:")
 message(STATUS "    version: ${OpenCV_VERSION}")
 message(STATUS "    libraries: ${OpenCV_LIBS}")
 message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
-
-add_executable(ImageProcessing main.cpp Sources/Image.cpp Headers/Image.h)
+include_directories(Headers)
+add_executable(ImageProcessing main.cpp Headers/Image.hpp Headers/ImageProcessor.hpp Headers/Opening.hpp)
 
 target_link_libraries(ImageProcessing ${OpenCV_LIBS})
