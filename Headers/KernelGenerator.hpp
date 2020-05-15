@@ -24,7 +24,7 @@ class KernelGenerator {
             tmp.data.reserve((2 * r + 1) * (2 * r + 1));
             for(auto y = -r; y <= r; ++y ) {
                 for(auto x = -r; x <= r; ++x) {
-                    tmp.data.push_back((x * x) + (y * y) <= (r * r));
+                    tmp.data.push_back(((x * x) + (y * y) <= (r * r) ) ? 255 : 0 );
                 }
             }
         }

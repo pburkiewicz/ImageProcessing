@@ -22,18 +22,29 @@ public:
         std::cout << "computing Erosion of image\n";
         auto const height = image.getHeigth();
         auto const width = image.getWidth();
-        auto data = getData(image);
-        int x = static_cast<int>(sqrt(k.data.size()));
+        auto& data = getData(image);
+        auto const sqrtKernel = static_cast<size_t>(sqrt(k.data.size()));
+        size_t const midKernel = k.data.size()/2;
+        auto mid = midKernel % sqrtKernel;
+        auto dataCopy = data;
+//        for(auto& i: dataCopy) i = 0;
         if(1 == image.getChannels()){
-            for(auto row = 0 ; row < height-x; ++row){
-                for(auto col = 0 ; col < width-x ; ++col ){
-                    for( auto i = 0 ; i < x; ++i){
-                        for(auto j = 0; j < x ; ++j ){
-                            std::cout << data[(row+i)*data.size()+col+i*x+j];
+            for(auto row = mid ; row < height-mid; ++row){
+                for(auto col = mid ; col < width-mid; ++col ){
+                    if(k.data[midKernel] == data[row*width+col] ) {
+                        int aaaaa = 0;
+                        for (auto i = 0; i < sqrtKernel+1; ++i) {
+                            for (auto j = 0; j < sqrtKernel+1; ++j) {
+                                aaaaa= (i +row) * width  + col + j;
+                                if(k.data[i*sqrtKernel + j] == 255 && k.data[i*sqrtKernel + j]  != data[(i +row) * width + col + j] ){
+                                    dataCopy[row*width+col] = 0;
+                                }
+                            }
                         }
                     }
                 }
             }
+            std::memcpy(data.data(), dataCopy.data(), data.size());
         }
         return image;
     }
