@@ -45,7 +45,7 @@ public:
             static int i = 0 ;
             auto tmp1 = tmp.reshape(0, height);
             cv::Mat dst;
-            cv::resize(tmp1, dst, cv::Size(), 5, 5); // upscale 2x
+            cv::resize(tmp1, dst, cv::Size(), 2, 2); // upscale 2x
 
             cv::imshow(name, dst);
         }
