@@ -30,14 +30,11 @@ public:
         if(1 == image.getChannels()){
             for(auto row = mid ; row < height-mid; ++row){
                 for(auto col = mid ; col < width-mid; ++col ){
-                    int d = row*width+col;
-                    int e = data[row*width+col];
-                    if(k.data[midKernel] == data[row*width+col] ) {
-                        for (int i = 0; i < sqrtKernel; ++i) {
-                            for (int j =0; j < sqrtKernel; ++j) {
-                                if(k.data[abs(i)*sqrtKernel + j] == 255 && k.data[abs(i)*sqrtKernel + j]  != data[(i +row) * width + col + j] ){
-                                    dataCopy[row*width+col] = 0;
-                                }
+                    for (int i = 0; i < sqrtKernel && k.data[midKernel] == data[row*width+col] ; ++i) {
+                        for (int j =0; j < sqrtKernel; ++j) {
+                            if(k.data[abs(i)*sqrtKernel + j] == 255 && k.data[abs(i)*sqrtKernel + j]  != data[(i +row) * width + col + j] ){
+                                dataCopy[row*width+col] = 0;
+                                break;
                             }
                         }
                     }
