@@ -8,7 +8,7 @@
 #include "ImageProcessor.hpp"
 #include "KernelGenerator.hpp"
 #include "Erosion.hpp"
-#include "Dilatation.hpp"
+#include "Dilation.hpp"
 #include <iostream>
 #warning remove include iostream
 
@@ -23,7 +23,7 @@ public:
     static Image& compute(Image& i, Kernel const& k) noexcept {
         KernelGenerator::display(k);
         std::cout << "computing Opening of image\n";
-        return Dilatation::compute(Erosion::compute(i, k), k);
+        return Dilation::compute(Erosion::compute(i, k), k);
     }
 
 };

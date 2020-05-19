@@ -10,19 +10,28 @@ using namespace std::string_literals;
 
 int main() {
 //    auto const path = "/home/student/Pobrane/nowe.bmp"s;
-//    auto const path = "/home/student/Desktop/circles.png"s;
-    auto const path = "/home/student/Pobrane/wzorek.bmp"s;
+    auto const path = "/home/student/Desktop/circles.png"s;
+//    auto const path = "/home/student/Pobrane/wzorek.bmp"s;
     auto im = Image::factory(std::move(path), "infile"s).value_or(Image());
     im.display();
     cv::Mat mat =  cv::imread(path, 0);
 
-    cv::erode(mat,mat,cv::getStructuringElement(2,cv::Size(5,5),cv::Point(2,2)));
-    cv::resize(mat, mat, cv::Size(), 10, 10);
+//    cv::erode(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
+//    cv::resize(mat, mat, cv::Size(), 10, 10);
+//    cv::imshow("name", mat);
+//    im.display();
+//    Image out(im, "outfile"s );
+//    Erosion erosion(2);
+//    erosion.compute(out);
+//    out.display();
+
+    cv::dilate(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
+    cv::resize(mat, mat, cv::Size(), 2, 2);
     cv::imshow("name", mat);
     im.display();
     Image out(im, "outfile"s );
-    Erosion erosion(2);
-    erosion.compute(out);
+    Dilation dilation(1);
+    dilation.compute(out);
     out.display();
 
     cv::waitKey(0);

@@ -31,20 +31,22 @@ class KernelGenerator {
         return tmp;
     }
 
-    //    void generateKernel(size_t r) noexcept {
+//    static Kernel generate(size_t r) noexcept {
+//        Kernel kernel;
+//        kernel.radius=r;
 //        for(auto x = 0 ; x < 2 * r + 1; ++x){
 //            for(auto y = 0 ; y < 2 * r + 1; ++y){
-//                    kernel.push_back((x - r) * (x - r) + (y - r) * (y - r) <= (r)*(r));
+//                    kernel.data.push_back(((x - r) * (x - r) + (y - r) * (y - r) <= (r)*(r)) ? 255 : 0);
 //            }
 //        }
-//       // return tmp;
+//        return kernel;
 //    }
 
 
     static void display(Kernel const& k) {
         int x = 0;
         for( auto i : k.data){
-            std::cout << (int)i <<  " ";
+            std::cout << (int)i <<  "\t";
             if( !(++x % (2*k.radius+1) )) std::cout << "\n";
         }
     }

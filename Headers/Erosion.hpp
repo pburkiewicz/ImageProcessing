@@ -31,7 +31,7 @@ public:
         auto mid = midKernel % sqrtKernel;
         auto dataCopy = data;
 
-        int sK2 = static_cast<int>(sqrtKernel / 2);
+        int const sK2 = static_cast<int>(sqrtKernel / 2);
 
         if (1 == image.getChannels()) {
             for (auto row = 0; row < height; ++row) {
