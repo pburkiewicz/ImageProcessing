@@ -12,9 +12,9 @@
 
 class Dilation : public ImageProcessor {
 public:
-    Dilation(size_t radius) : ImageProcessor(radius) {}
-    Dilation(Kernel const& kernel_) : ImageProcessor(kernel_) {}
-    Dilation(Kernel&& kernel_) : ImageProcessor(std::move(kernel_)) {}
+    explicit Dilation(size_t radius) : ImageProcessor(radius) {}
+    explicit Dilation(Kernel const& kernel_) : ImageProcessor(kernel_) {}
+    explicit Dilation(Kernel&& kernel_) : ImageProcessor(std::move(kernel_)) {}
 
     Image& compute(Image& image) const noexcept{ return compute(image, kernel); }
 
@@ -32,7 +32,6 @@ public:
         if (1 == image.getChannels()) {
             for (auto row = 0; row < height; ++row) {
                 for (auto col = 0; col < width; ++col) {
-                 //   if(row == 8  && col == 4){
                         for (int i = -sK2; i <= sK2 && k.data[midKernel] != data[row * width + col]; ++i) {
                             int const ind = height - row - i;
                             if ((row - (-i) >= 0) && ind > 0) {
@@ -49,7 +48,6 @@ public:
                                 }
                             }
                         }
-                    //}
                 }
             }
             std::memcpy(data.data(), dataCopy.data(), data.size());

@@ -17,15 +17,34 @@ struct Kernel {
 
 class KernelGenerator {
     public:
-    static Kernel generate(intmax_t r) noexcept {
+
+    static Kernel generate(Image::storage_container& data, size_t size){
+        Kernel k{ data, size};
+        return k;
+    }
+
+    static Kernel generate(intmax_t r, std::string&& type = "circle") noexcept {
         Kernel tmp;
         if(std::numeric_limits<decltype(r)>::max() / r >= r) {
-            tmp.radius = r;
-            tmp.data.reserve((2 * r + 1) * (2 * r + 1));
-            for(auto y = -r; y <= r; ++y ) {
-                for(auto x = -r; x <= r; ++x) {
-                    tmp.data.push_back(((x * x) + (y * y) <= (r * r) ) ? 255 : 0 );
+            if( type == "circle") {
+                tmp.radius = r;
+                tmp.data.reserve((2 * r + 1) * (2 * r + 1));
+                for (auto y = -r; y <= r; ++y) {
+                    for (auto x = -r; x <= r; ++x) {
+                        tmp.data.push_back(((x * x) + (y * y) <= (r * r)) ? 255 : 0);
+                    }
                 }
+            }else{
+                tmp.radius = r;
+                tmp.data.assign(r*r, 0);
+                for(auto i = 0 ; i < r ; ++i){
+                    for(auto j = 0 ; j < r ; ++j){
+                        if(i == 0 || i == r-1 || j == 0 || j == r-1){
+                            tmp.data[i*r+j] = 255;
+                        }
+                    }
+                }
+
             }
         }
         return tmp;

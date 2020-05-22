@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ImageEntropy.hpp>
 #include <Complement.hpp>
+#include <Filling.hpp>
 
 
 using namespace std::string_literals;
@@ -16,28 +17,19 @@ int main() {
     auto im = Image::factory(std::move(path), "infile"s).value_or(Image());
     im.display();
 //    cv::Mat mat =  cv::imread(path, 0);
-
 //    cv::erode(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
-//    cv::resize(mat, mat, cv::Size(), 10, 10);
-//    cv::imshow("name", mat);
-//    im.display();
-//    Image out(im, "outfile"s );
-//    Erosion erosion(2);
-//    erosion.compute(out);
-//    out.display();
-//
 //    cv::dilate(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
-//    cv::resize(mat, mat, cv::Size(), 2, 2);
-//    cv::imshow("name", mat);
-//    im.display();
-//    Image out(im, "outfile"s );
-//    Dilation dilation(1);
-//    dilation.compute(out);
+//    cv::resize(mat, mat, cv::Size(), 10, 10);
+
+
+    Image out(im, "outfile"s );
+//    Opening opening(1);
+//    opening.compute(out);
 //    out.display();
 
-    Image x = Complement::compute(im);
-    x.display();
-
+    Filling::compute(out);
+    out.display();
+//    cv::imshow("correct opening", mat);
 
     cv::waitKey(0);
     return 0;

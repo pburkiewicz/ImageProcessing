@@ -13,11 +13,11 @@
 
 class Erosion : public ImageProcessor {
 public:
-    Erosion(size_t radius) : ImageProcessor(radius) {}
+    explicit Erosion(size_t radius) : ImageProcessor(radius) {}
 
-    Erosion(Kernel const &kernel_) : ImageProcessor(kernel_) {}
+    explicit Erosion(Kernel const &kernel_) : ImageProcessor(kernel_) {}
 
-    Erosion(Kernel &&kernel_) : ImageProcessor(std::move(kernel_)) {}
+    explicit Erosion(Kernel &&kernel_) : ImageProcessor(std::move(kernel_)) {}
 
     Image &compute(Image &image) const noexcept { return compute(image, kernel); }
 
@@ -36,7 +36,6 @@ public:
         if (1 == image.getChannels()) {
             for (auto row = 0; row < height; ++row) {
                 for (auto col = 0; col < width; ++col) {
-                    if(row == 8  && col == 4){
                     for (int i = -sK2; i <= sK2 && k.data[midKernel] == data[row * width + col]; ++i) {
                         int const ind = height - row - i;
                         if ((row - (-i) >= 0) && ind > 0) {
@@ -52,7 +51,6 @@ public:
                                 }
                             }
                         }
-                    }
                     }
                 }
             }
