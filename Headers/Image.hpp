@@ -42,7 +42,7 @@ public:
     }
 
     static std::optional<Image> factory(std::string const &filename, std::string const &name = {}) noexcept {
-        auto mat = cv::imread(filename, CV_LOAD_IMAGE_ANYDEPTH);
+        auto mat = cv::imread(filename, CV_LOAD_IMAGE_UNCHANGED);
         if (mat.data != nullptr) {
             storage_container data(mat.datastart, mat.dataend);
             auto channels = mat.channels(); // ?
@@ -56,12 +56,12 @@ public:
     void display() const noexcept {
         cv::Mat tmp(data, true);
         if (tmp.data != nullptr) {
-            static int i = 0;
-            auto tmp1 = tmp.reshape(0, height);
-            cv::Mat dst;
-            cv::resize(tmp1, dst, cv::Size(), 2, 2); // upscale 2x
+//            static int i = 0;
+//            auto tmp1 = ;
+//            cv::Mat dst;
+            //cv::resize(tmp1, dst, cv::Size(), 1, 1); // upscale 2x
 
-            cv::imshow(name, dst);
+            cv::imshow(name, tmp.reshape(channels, height));
         }
     }
 

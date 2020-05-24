@@ -6,14 +6,18 @@
 #include <ImageEntropy.hpp>
 #include <Complement.hpp>
 #include <Filling.hpp>
+#include <Normalization.hpp>
 
 
 using namespace std::string_literals;
 
 int main() {
 //    auto const path = "/home/student/Pobrane/nowe.bmp"s;
-    auto const path = "/home/student/Desktop/circles.png"s;
+//    auto const path = "/home/student/Desktop/circles.png"s;
 //    auto const path = "/home/student/Pobrane/wzorek.bmp"s;
+//    auto const path = "/home/student/Desktop/pout.tif"s;
+    auto const path = "/home/student/Desktop/onion.png"s;
+//    auto const path = "/home/student/CLionProjects/ImageProcessing/Images/guinea.jpg"s;
     auto im = Image::factory(std::move(path), "infile"s).value_or(Image());
     im.display();
 //    cv::Mat mat =  cv::imread(path, 0);
@@ -27,9 +31,21 @@ int main() {
 //    opening.compute(out);
 //    out.display();
 
-    Filling::compute(out);
-    out.display();
+//    Filling::compute(out);
+//    out.display();
 //    cv::imshow("correct opening", mat);
+
+    Normalization::pointsContainer points;
+    points.push_back(std::make_pair(10,20));
+    points.push_back(std::make_pair(250,220));
+    points.push_back(std::make_pair(200,180));
+    points.push_back(std::make_pair(100,150));
+
+
+    std::sort(points.begin() , points.end());
+    Normalization norm(points);
+    norm.compute(out);
+    out.display();
 
     cv::waitKey(0);
     return 0;

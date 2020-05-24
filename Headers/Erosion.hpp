@@ -15,17 +15,17 @@ class Erosion : public ImageProcessor {
 public:
     explicit Erosion(size_t radius) : ImageProcessor(radius) {}
 
-    explicit Erosion(Kernel const &kernel_) : ImageProcessor(kernel_) {}
+    explicit Erosion(Kernel const& kernel_) : ImageProcessor(kernel_) {}
 
-    explicit Erosion(Kernel &&kernel_) : ImageProcessor(std::move(kernel_)) {}
+    explicit Erosion(Kernel&& kernel_) : ImageProcessor(std::move(kernel_)) {}
 
-    Image &compute(Image &image) const noexcept { return compute(image, kernel); }
+    Image& compute(Image& image) const noexcept { return compute(image, kernel); }
 
-    static Image &compute(Image &image, Kernel const &k) noexcept {
+    static Image& compute(Image& image, Kernel const& k) noexcept {
         std::cout << "computing Erosion of image\n";
         auto const height = image.getHeigth();
         auto const width = image.getWidth();
-        auto &data = getData(image);
+        auto& data = getData(image);
         auto const sqrtKernel = static_cast<size_t>(sqrt(k.data.size()));
         size_t const midKernel = k.data.size() / 2;
         auto mid = midKernel % sqrtKernel;

@@ -16,6 +16,7 @@ public:
     ImageProcessor(size_t radius) : kernel(std::move(KernelGenerator::generate(radius))) {}
     ImageProcessor(Kernel const& kernel_) : kernel(kernel_) {}
     ImageProcessor(Kernel&& kernel_) : kernel(std::move(kernel_)) {}
+    ImageProcessor() = default;
     virtual ~ImageProcessor() = default;
 
 protected:
