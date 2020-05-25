@@ -13,18 +13,19 @@ using namespace std::string_literals;
 
 int main() {
 //    auto const path = "/home/student/Pobrane/nowe.bmp"s;
+//    auto const path = "/home/student/Pobrane/simpleColor.png"s;
 //    auto const path = "/home/student/Desktop/circles.png"s;
 //    auto const path = "/home/student/Pobrane/wzorek.bmp"s;
-//    auto const path = "/home/student/Desktop/pout.tif"s;
-    auto const path = "/home/student/Desktop/onion.png"s;
+    auto const path = "/home/student/Desktop/pout.tif"s;
+//    auto const path = "/home/student/Desktop/onion.png"s;
+//    auto const path = "/home/student/Desktop/kolorki.png"s;
 //    auto const path = "/home/student/CLionProjects/ImageProcessing/Images/guinea.jpg"s;
-    auto im = Image::factory(std::move(path), "infile"s).value_or(Image());
+    auto im = Image::factory(path, "infile"s).value_or(Image());
     im.display();
 //    cv::Mat mat =  cv::imread(path, 0);
 //    cv::erode(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
 //    cv::dilate(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
 //    cv::resize(mat, mat, cv::Size(), 10, 10);
-
 
     Image out(im, "outfile"s );
 //    Opening opening(1);
@@ -34,12 +35,12 @@ int main() {
 //    Filling::compute(out);
 //    out.display();
 //    cv::imshow("correct opening", mat);
-
+//
     Normalization::pointsContainer points;
-    points.push_back(std::make_pair(10,20));
-    points.push_back(std::make_pair(250,220));
-    points.push_back(std::make_pair(200,180));
-    points.push_back(std::make_pair(100,150));
+    points.push_back(std::make_pair(30,250));
+    points.push_back(std::make_pair(110,240));
+    points.push_back(std::make_pair(120,200));
+    points.push_back(std::make_pair(250,180));
 
 
     std::sort(points.begin() , points.end());

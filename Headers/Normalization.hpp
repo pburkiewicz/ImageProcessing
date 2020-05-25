@@ -26,22 +26,22 @@ public:
     Image& compute(Image &image) const noexcept { return compute(image, intensivityPoints); }
 
     static Image& compute(Image& image, pointsContainer const& points){
-        Image::storage_container& data = getData(image);
-        display(points);
-        lookUpTable lut = createLookUpTable(image);
-        linearNormalization(lut,0, 255);
-        for(auto& i : data){
-            i = lut[i];
-        }
-        if(!points.empty()) {
-            linearNormalization(lut, 0, points.begin()->second);
-            for (auto pointIt = points.begin(); pointIt != points.end(); ++pointIt) {
-                linearNormalization(lut, pointIt->second, (++pointIt)->second);
+        auto begin = getData(image).begin();
+        auto end = getData(image).end();
+        for(auto channel = 0 ; channel < image.getChannels() ; ++channel) {
+            lookUpTable lut = createLookUpTable(image, begin,end, channel); // create LookUpTable for channel
+            if (!points.empty()) { // if there is no points - use simple normalization
+                linearNormalization(lut, std::pair(0, 0), points[0]);
+                for (auto pointIt = points.begin(); pointIt != (points.end() - 1); ++pointIt) {
+                    linearNormalization(lut, *pointIt, *(pointIt + 1));
+                }
+                linearNormalization(lut, points[points.size() - 1], std::pair(255, 255));
+            } else {
+                linearNormalization(lut, std::pair(0, 0), std::pair(255, 255));
             }
-            linearNormalization(lut,  points.end()->second, 255);
-        }
-        for(auto& i : data){
-            i = lut[i];
+            for(auto i = begin+channel ; i != end+channel  ; i+=(image.getChannels())){
+                *i = lut[*i]; // make changes for channel
+            }
         }
         return image;
     }
@@ -49,26 +49,28 @@ public:
 
 
 private:
-    static lookUpTable createLookUpTable(Image& image){
+    static lookUpTable createLookUpTable(Image& image,Image::storage_container::iterator& begin, Image::storage_container::iterator& end, int channel ){
         Image::storage_container data = getData(image);
         lookUpTable lut;
-        for(auto& i : data){
-            lut.insert(std::pair(i,i));
+        for(auto i = begin+channel ; i != end+channel  ; i+=(image.getChannels())){
+            lut.insert(std::pair(*i, *i));
         }
         return lut;
     }
 
 
-    static lookUpTable& linearNormalization(lookUpTable& lut, uchar const start, uchar const end){
-        auto min = lut.lower_bound(start);
-        auto max = (--lut.upper_bound(end));
+    static lookUpTable& linearNormalization(lookUpTable& lut, std::pair<uchar, uchar> const& start, std::pair<uchar, uchar> const& end){
+        auto min = lut.lower_bound(start.first);
+        auto max = (lut.upper_bound(end.first));
         uchar minVal = min->first;
+        if( max != lut.begin()) --max;
         uchar maxVal = max->first;
-
-//        uchar min = std::min_element(lut.begin(), lut.end())->first;
-//        uchar max = std::max_element(lut.begin(), lut.end())->first;
-        for(auto i = lut.find(minVal); i != lut.find(maxVal) ; ++i){
-            i->second = (end-start) * (i->first-minVal)/(maxVal-minVal)+start;
+        if(minVal < maxVal && minVal>= start.first && maxVal <= end.first) {
+            auto const norm = static_cast<double>(end.second - start.second)/ (maxVal - minVal);
+            auto const endFor = ++(lut.find(maxVal));
+            for (auto i = lut.find(minVal); i != endFor;  ++i) {
+                i->second   = norm * (i->first - minVal)  + start.second;
+            }
         }
         return lut;
 
