@@ -69,7 +69,7 @@ public:
 
     [[nodiscard]] auto getWidth() const { return width; }
 
-    [[nodiscard]] auto getHeigth() const { return height; }
+    [[nodiscard]] auto getHeight() const { return height; }
 
 
     Image &operator&=(Image const &image) {
@@ -80,7 +80,7 @@ public:
     }
 
     bool operator==(Image const &image) {
-        if (channels == image.getChannels() && width == image.getWidth() && height == image.getHeigth()) {
+        if (channels == image.getChannels() && width == image.getWidth() && height == image.getHeight()) {
             return data == image.data;
         }
     }
@@ -95,7 +95,7 @@ private:
 
     void createBorderImage(Image& image) {
         size_t width = image.getWidth();
-        size_t height = image.getHeigth();
+        size_t height = image.getHeight();
         image.data.assign(width * height, 0);
         for (auto i = 0; i < height; ++i) {
             for (auto j = 0; j < width; ++j) {

@@ -16,9 +16,9 @@ int main() {
 //    auto const path = "/home/student/Pobrane/simpleColor.png"s;
 //    auto const path = "/home/student/Desktop/circles.png"s;
 //    auto const path = "/home/student/Pobrane/wzorek.bmp"s;
-//    auto const path = "/home/student/Desktop/pout.tif"s;
+    auto const path = "/home/student/Desktop/pout.tif"s;
 //    auto const path = "/home/student/Desktop/onion.png"s;
-    auto const path = "/home/student/Desktop/kolorki.png"s;
+//    auto const path = "/home/student/Desktop/kolorki.png"s;
 //    auto const path = "/home/student/CLionProjects/ImageProcessing/Images/guinea.jpg"s;
     auto im = Image::factory(path, "infile"s).value_or(Image());
     im.display();
@@ -37,11 +37,10 @@ int main() {
 //    cv::imshow("correct opening", mat);
 //
     Normalization::pointsContainer points;
-    points.push_back(std::make_pair(70,200));
-    points.push_back(std::make_pair(110,220));
-    points.push_back(std::make_pair(120,230));
-    points.push_back(std::make_pair(250,254));
-
+    points.push_back(std::make_pair(30,250));
+    points.push_back(std::make_pair(110,240));
+    points.push_back(std::make_pair(120,200));
+    points.push_back(std::make_pair(250,180));
 
     std::sort(points.begin() , points.end());
     Normalization norm(points);

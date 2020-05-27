@@ -20,7 +20,7 @@ public:
 
     static Image& compute(Image& image, Kernel const& k) noexcept {
         std::cout << "computing Dilation of image\n";
-        auto const height = image.getHeigth();
+        auto const height = image.getHeight();
         auto const width = image.getWidth();
         auto& data = getData(image);
         auto const sqrtKernel = static_cast<size_t>(sqrt(k.data.size()));
