@@ -27,8 +27,11 @@ protected:
 public:
     constexpr Image() noexcept = default;
 
-    Image(storage_container &data_, size_t channels_, size_t width_, size_t height_, std::string &&name_)
+    Image(storage_container& data_, size_t channels_, size_t width_, size_t height_, std::string &&name_)
             : data(data_), channels(channels_), width(width_), height(height_), name(name_) { ; }
+
+    Image(size_t channels_, size_t width_, size_t height_, std::string &&name_)
+            : channels(channels_), width(width_), height(height_), name(name_) { ; }
 
     Image(Image i, std::string const &name_) : Image(std::move(i)) { name = name_; }
 
@@ -90,7 +93,7 @@ public:
     }
 
 private:
-    Image(std::vector<uchar> &&data_, size_t channels_, size_t width_, size_t height_, std::string const &name_)
+    Image(std::vector<uchar>&& data_, size_t channels_, size_t width_, size_t height_, std::string const &name_)
             : data(std::move(data_)), channels(channels_), width(width_), height(height_), name(name_) {}
 
     void createBorderImage(Image& image) {
