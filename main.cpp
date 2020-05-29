@@ -19,27 +19,61 @@ int main() {
 //    auto const path = "/home/student/Desktop/circles.png"s;
 //    auto const path = "/home/student/Pobrane/wzorek.bmp"s;
 //    auto const path = "/home/student/Desktop/pout.tif"s;
-    auto const path = "/home/student/Desktop/onion.png"s;
+    auto const path = "/home/student/Desktop/AT3_1m4_02.tif"s;
+//    auto const path = "/home/student/Desktop/onion.png"s;
 //    auto const path = "/home/student/Desktop/kolorki.png"s;
 //    auto const path = "/home/student/CLionProjects/ImageProcessing/Images/guinea.jpg"s;
     auto im = Image::factory(path, "infile"s).value_or(Image());
     im.display();
-//    cv::Mat mat =  cv::imread(path, 0);
-//    cv::erode(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
-//    cv::dilate(mat,mat,cv::getStructuringElement(2,cv::Size(3,3),cv::Point(1,1)));
-//    cv::resize(mat, mat, cv::Size(), 10, 10);
+    cv::Mat mat = cv::imread(path, 0);
+    cv::Mat mat2;
+    cv::Mat mat3;
 
-    Image in(im, "In"s );
+//    cv::erode(mat,mat2,cv::getStructuringElement(2,cv::Size(31,31),cv::Point(15,15)));
+//    cv::dilate(mat2, mat3, cv::getStructuringElement(2, cv::Size(31, 31), cv::Point(15, 15)));
+//    cv::dilate(mat,mat3,cv::getStructuringElement(2,cv::Size(20,20),cv::Point(10,10)));
+//    cv::imshow("oryginal", mat3);
+//    Image in(im, "In"s );
+
+
 //    auto out2 = Image::factory(path2, "entropy").value_or(Image());
-    Image out(im, "outfile"s );
-
-    Image out2(1, im.getWidth(), im.getHeight(),  "entropy");
-
-
-
-//    Opening opening(1);
-//    opening.compute(out);
+    Image out(im, "opening"s);
+    Image out3(im, "dilation"s);
+    Image out4(im, "erosiondilation"s);
+//    Image out2(1, im.getWidth(), im.getHeight(),  "entropy");
+//    for(int i = 1 ; i < 15 ; ++i){
+//        std::cout<< "Promien " << i << "\n";
+//        Kernel k = KernelGenerator::generate(i);
+//        KernelGenerator::display(k);
+//        std::cout<< "\n\n";
+//    }
+    Kernel k = KernelGenerator::generate(15);
+//    auto se = cv::getStructuringElement(2,cv::Size(31,31),cv::Point(15,15));
+//    std::memcpy(k.data.data() ,se.data, se.elemSize()*se.rows*se.cols);
+//
+//    KernelGenerator::display(k);
+//    Erosion::compute(out,k);
 //    out.display();
+//    Dilation::compute(out, k);
+//    out.display();
+//    std::cout << "\n";
+    Opening opening(15);
+    opening.compute(out);
+    out.display();
+//
+//    Erosion e(15);
+//    e.compute(out);
+//
+//    Dilation d(15);
+//    d.compute(out);
+//    out.display();
+////
+//    Erosion e2(10);
+//    e2.compute(out4);
+//    Dilation d2(10);
+//    d2.compute(out4);
+//    out4.display();
+
 
 //    Filling::compute(out);
 //    out.display();
@@ -58,9 +92,9 @@ int main() {
 //    norm.compute(out);
 //    out.display();
 //
-    ImageEntropy ie;
-    ie.compute(in, out2);
-    out2.display();
+//    ImageEntropy ie;
+//    ie.compute(in, out2);
+//    out2.display();
     cv::waitKey(0);
     return 0;
 }

@@ -26,7 +26,7 @@ public:
             tmp.data.reserve((2 * r + 1) * (2 * r + 1));
             for (auto y = -r; y <= r; ++y) {
                 for (auto x = -r; x <= r; ++x) {
-                    tmp.data.push_back(((x * x) + (y * y) <= (r * r)) ? 255 : 0);
+                    tmp.data.push_back(((x * x) + (y * y)) <= (r*r) ? 255 : 0);
                 }
             }
         }
@@ -38,7 +38,7 @@ public:
 //        kernel.radius=r;
 //        for(auto x = 0 ; x < 2 * r + 1; ++x){
 //            for(auto y = 0 ; y < 2 * r + 1; ++y){
-//                    kernel.data.push_back(((x - r) * (x - r) + (y - r) * (y - r) <= (r)*(r)) ? 255 : 0);
+//                    kernel.data.push_back(sqrt(((x - r) * (x - r) + (y - r) * (y - r))) <= (r) ? 255 : 0);
 //            }
 //        }
 //        return kernel;

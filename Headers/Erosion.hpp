@@ -30,34 +30,36 @@ public:
         size_t const midKernel = k.data.size() / 2;
         auto mid = midKernel % sqrtKernel;
         auto dataCopy = data;
-
-        int const sK2 = static_cast<int>(sqrtKernel / 2);
+        auto const sK2 = static_cast<int>(sqrtKernel / 2);
 
         if (1 == image.getChannels()) {
             for (auto row = 0; row < height; ++row) {
                 for (auto col = 0; col < width; ++col) {
-                    for (int i = -sK2; i <= sK2 && k.data[midKernel] == data[row * width + col]; ++i) {
+                    uchar min = 255;
+                    for (int i = -sK2; (i <= sK2); ++i) {
                         int const ind = height - row - i;
                         if ((row - (-i) >= 0) && ind > 0) {
                             for (int j = -sK2; j <= sK2; ++j) {
                                 int const ind2 = width - col - j;
                                 if (col - (-j) >= 0 && ind2 > 0) {
-                                    if (k.data[(i + sK2) * sqrtKernel + j + sK2] == 255 &&
-                                        k.data[(i + sK2) * sqrtKernel + j + sK2] !=
-                                        data[(i + row) * width + col + j]) {
-                                        dataCopy[row * width + col] = 0;
-                                        break;
+                                    if ( k.data[(i + sK2) * sqrtKernel + j + sK2]  == 255) {
+                                        if (data[(i + row) * width + col + j] < min) {
+                                            min = data[(i + row) * width + col + j];
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    dataCopy[row*width+col]= min;
                 }
             }
             std::memcpy(data.data(), dataCopy.data(), data.size());
         }
         return image;
     }
+
+
 };
 
 

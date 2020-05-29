@@ -19,7 +19,7 @@ public:
         Image markerCopy(marker, "markerCopy");
         do{
             markerCopy = marker;
-            Dilation::compute(marker, k);
+            Dilation::computeBin(marker, k);
             marker &= image;
         }while(marker != markerCopy);
 
