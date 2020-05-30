@@ -15,7 +15,7 @@ public:
     static Image& compute(Image& image){
         Complement::compute(image);
         Kernel k = KernelGenerator::generate(1);
-        Image marker(image.getWidth(), image.getHeight(), "border");
+        Image marker(image.getWidth(), image.getHeight(), image.getName(), "border");
         Image markerCopy(marker, "markerCopy");
         do{
             markerCopy = marker;
@@ -24,6 +24,7 @@ public:
         }while(marker != markerCopy);
 
         Complement::compute(marker);
+
         image = marker;
 
         return image;

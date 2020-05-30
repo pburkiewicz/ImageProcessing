@@ -35,10 +35,11 @@ public:
 
     Image(Image i, std::string const &name_) : Image(std::move(i)) { name = name_; }
 
-    Image(size_t width_, size_t height_, std::string&& type = "border") {
+    Image(size_t width_, size_t height_, std::string&& name_, std::string&& type = "border") {
         channels = 1;
         width = width_;
         height = height_;
+        name = name_;
         if (type == "border") {
             createBorderImage(*this);
         }
@@ -68,12 +69,25 @@ public:
         }
     }
 
+    void save() const {
+        cv::Mat tmp(data, true);
+        cv::Mat tmp1 = tmp.reshape(channels, height);
+//        if( 1 == channels){
+//            tmp = cv::Mat(width, height, CV_8UC1);
+//        }else if( 3 == channels){
+//            tmp = cv::Mat(width, height, CV_8UC3);
+//        }
+//        memcpy(tmp.data, data.data(), data.size()*sizeof(uchar));
+        cv::imwrite( "./"+name+".png", tmp1 );
+    }
+
     [[nodiscard]] auto getChannels() const { return channels; }
 
     [[nodiscard]] auto getWidth() const { return width; }
 
     [[nodiscard]] auto getHeight() const { return height; }
 
+    [[nodiscard]] auto getName() const { return name; }
 
     Image &operator&=(Image const &image) {
         for (auto i = 0; i < image.data.size(); ++i) {

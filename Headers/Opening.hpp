@@ -21,7 +21,6 @@ public:
     Image& compute(Image& i) const noexcept { return compute(i, kernel);}
 
     static Image& compute(Image& i, Kernel const& k) noexcept {
-        KernelGenerator::display(k);
         std::cout << "computing Opening of image\n";
         return Dilation::compute(Erosion::compute(i,k), k);
     }
