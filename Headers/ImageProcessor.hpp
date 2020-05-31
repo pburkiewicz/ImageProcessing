@@ -7,7 +7,6 @@
 #include "Image.hpp"
 #include "KernelGenerator.hpp"
 #include <iostream>
-#warning delete iostream include
 
 class ImageProcessor {
 protected:

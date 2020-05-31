@@ -8,7 +8,6 @@
 #include "ImageProcessor.hpp"
 #include "KernelGenerator.hpp"
 #include <iostream>
-#warning remove include iostream
 
 class Dilation : public ImageProcessor {
 public:

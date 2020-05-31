@@ -14,7 +14,6 @@
 #include <map>
 #include <algorithm>
 
-#warning remove include iostream
 
 class ImageEntropy : public ImageProcessor {
 public:

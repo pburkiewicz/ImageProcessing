@@ -10,7 +10,6 @@
 #include "Erosion.hpp"
 #include "Dilation.hpp"
 #include <iostream>
-#warning remove include iostream
 
 class Opening : public ImageProcessor {
 public:

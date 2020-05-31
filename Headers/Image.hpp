@@ -90,6 +90,7 @@ public:
         if (channels == image.getChannels() && width == image.getWidth() && height == image.getHeight()) {
             return data == image.data;
         }
+        return false;
     }
 
     bool operator!=(Image const &image) {

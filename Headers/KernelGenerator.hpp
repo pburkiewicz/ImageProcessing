@@ -8,7 +8,6 @@
 #include <vector>
 #include <iostream>
 
-#warning remove include iostream
 
 
 struct Kernel {

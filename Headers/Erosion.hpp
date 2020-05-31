@@ -9,7 +9,6 @@
 #include "KernelGenerator.hpp"
 #include <iostream>
 
-#warning remove include iostream
 
 class Erosion : public ImageProcessor {
 public:
