@@ -11,6 +11,6 @@ message(STATUS "    version: ${OpenCV_VERSION}")
 message(STATUS "    libraries: ${OpenCV_LIBS}")
 message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 include_directories(Headers)
-add_executable(ImageProcessing main.cpp Headers/Image.hpp Headers/ImageProcessor.hpp Headers/Opening.hpp Headers/Filling.hpp Headers/Complement.hpp Headers/Normalization.hpp Headers/ImageEntropy.hpp)
+add_executable(ImageProcessing main.cpp Headers/Image.hpp Headers/ImageProcessor.hpp Headers/Dilation.hpp Headers/Erosion.hpp  Headers/KernelGenerator.hpp Headers/Opening.hpp Headers/Filling.hpp Headers/Complement.hpp Headers/Normalization.hpp Headers/ImageEntropy.hpp)
 
 target_link_libraries(ImageProcessing ${OpenCV_LIBS})
