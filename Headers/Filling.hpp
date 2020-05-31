@@ -13,6 +13,7 @@ class Filling : public ImageProcessor{
 
 public:
     static Image& compute(Image& image){
+        std::cout << "computing Filling\n";
         Complement::compute(image);
         Kernel k = KernelGenerator::generate(1);
         Image marker(image.getWidth(), image.getHeight(), image.getName(), "border");

@@ -21,21 +21,7 @@ public:
 
 //    Image& compute(Image &image) const noexcept { return ImageEntropy::compute(image); }
 private:
-    static std::array<size_t, 256>&& calculateHistogram(Image& image) {
-        std::array<size_t, 256> hist{};
-        for (auto& i : getData(image)) {
-            hist[static_cast<size_t>(i)]++;
-        }
-        return std::move(hist);
-    }
 
-    static std::map<uchar, size_t>&& calculateLocalHistogram(Image::storage_container im) {
-        std::map<uchar, size_t> hist{};
-        for (auto& i : im) {
-            hist[i]++;
-        }
-        return std::move(hist);
-    }
 
     struct Entropy{
         void operator()(double p) { entropy += (p*log2(1.0/p)); }

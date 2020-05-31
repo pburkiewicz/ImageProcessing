@@ -57,7 +57,6 @@ public:
     }
 
     static Image& computeBin(Image& image, Kernel const& k) noexcept {
-        std::cout << "computing Dilation of image\n";
         auto const height = image.getHeight();
         auto const width = image.getWidth();
         auto& data = getData(image);

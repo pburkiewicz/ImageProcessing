@@ -60,11 +60,6 @@ public:
     void display() const noexcept {
         cv::Mat tmp(data, true);
         if (tmp.data != nullptr) {
-//            static int i = 0;
-//            auto tmp1 = ;
-//            cv::Mat dst;
-            //cv::resize(tmp1, dst, cv::Size(), 1, 1); // upscale 2x
-
             cv::imshow(name, tmp.reshape(channels, height));
         }
     }
@@ -72,13 +67,8 @@ public:
     void save() const {
         cv::Mat tmp(data, true);
         cv::Mat tmp1 = tmp.reshape(channels, height);
-//        if( 1 == channels){
-//            tmp = cv::Mat(width, height, CV_8UC1);
-//        }else if( 3 == channels){
-//            tmp = cv::Mat(width, height, CV_8UC3);
-//        }
-//        memcpy(tmp.data, data.data(), data.size()*sizeof(uchar));
-        cv::imwrite( "./"+name+".png", tmp1 );
+
+        cv::imwrite( "../"+name+".png", tmp1 );
     }
 
     [[nodiscard]] auto getChannels() const { return channels; }

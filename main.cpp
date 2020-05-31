@@ -11,135 +11,177 @@
 
 using namespace std::string_literals;
 
+void filling(){
+    Image im{};
+    std::string filepath;
+    std::string filename;
+    while(true) {
+        std::cout << "4. Wypelnianie otworow za pomoca rekonstrukcji\n";
+        std::cout << "Wczytaj obraz logiczny\nPodaj sciezke do pliku: ";
+        std::cin >> filepath;
+        std::cout << "\nPodaj nazwe pliku wyjsciowego: ";
+        std::cin >> filename;
+        im = Image::factory(filepath, filename).value_or(Image());
+        if (im.getChannels() == 1) {
+            break;
+        }
+    }
+
+    Image out(im, filename);
+    im.display();
+    Filling::compute(out);
+    out.display();
+    out.save();
+}
+
+void opening(){
+    Image im{};
+    std::string filepath;
+    std::string filename;
+    size_t r;
+    while(true) {
+        std::cout << "3. Otwarcie kolowym elementem strukturalnym o zadanym promieniu\n";
+        std::cout << "Wczytaj obraz logiczny lub monochromatyczny\nPodaj sciezke do pliku: ";
+        std::cin >> filepath;
+        std::cout << "Podaj nazwe pliku wyjsciowego: ";
+        std::cin >> filename;
+        std::cout << "Podaj promien otwarcia: ";
+        std::cin >> r;
+        im = Image::factory(filepath, filename).value_or(Image());
+        if (im.getChannels() == 1) {
+            break;
+        }
+    }
+
+    Image out(im, filename);
+    im.display();
+    Opening o{r};
+    o.compute(out);
+    out.display();
+    out.save();
+}
+
+void entropy(){
+    Image im{};
+    std::string filepath;
+    std::string filename;
+    size_t r;
+    while(true) {
+        std::cout << "\n2. Filtracja entropii w zadanym oknie\n";
+        std::cout << "Wczytaj obraz kolorowy lub monochromatyczny\nPodaj sciezke do pliku: ";
+        std::cin >> filepath;
+        std::cout << "Podaj nazwe pliku wyjsciowego: ";
+        std::cin >> filename;
+        std::cout << "Podaj dlugosc boku okna: ";
+        std::cin >> r;
+        im = Image::factory(filepath, filename).value_or(Image());
+        if (im.getWidth() != 0 && im.getHeight() != 0) {
+            break;
+        }
+    }
+    Image out(1, im.getWidth(), im.getHeight(), std::move(filename));
+    im.display();
+    ImageEntropy::compute(im, out, r);
+    out.display();
+    out.save();
+}
+
+
+void normalization(){
+    Image im{};
+    std::string filepath;
+    std::string filename;
+    Normalization::pointsContainer points{};
+    std::cout << "\n1. Normalizacja względem minimum 3 punktow \n\n";
+    std::cout << "Wczytaj obraz kolorowy lub monochromatyczny\nPodaj sciezke do pliku: ";
+    std::cin >> filepath;
+    std::cout << "Podaj nazwe pliku wyjsciowego: ";
+    std::cin >> filename;
+    const char ESC =27;
+    char c;
+    std::string line;
+    bool stop = false;
+    std::cout<<"Podaj wartosci wejsciowe i wyjsciowe 3 kolejnych punktow.  Wartosci z zakresu od 0 do 255 .\n";
+    std::cin.ignore();
+    while (!stop) {
+        std::getline(std::cin, line);
+        if (0 == line.length()) {
+            stop = true;
+            std::cout << "Pusta linia. koncze wczytywac\n";
+            break;
+        }
+        char* line_endptr = nullptr;
+        auto p1 = strtoul(line.c_str(), &line_endptr, 10);
+        auto p2 = strtoul(line_endptr, nullptr, 10);
+        points.emplace_back(p1, p2);
+    }
+    std::cout << "wczytano " << points.size() << " punktów\n";
+    if(points.size() < 3) {
+        std::cout << "przekazano za malo punktów. potrzeba przynajmniej 3\n";
+        return;
+    }
+
+
+    im = Image::factory(filepath, filename).value_or(Image());
+    if (im.getWidth() == 0 || im.getHeight() == 0) {
+        std::cout << "nieprawidlowe wymiary obrazka\n";
+        return ;
+    }
+
+    std::cout<<"Points:\n";
+    for(auto& i : points){
+        std::cout<<(int)i.first << " " << (int)i.second << "\n";
+    }
+    Image out(im, filename);
+    im.display();
+    std::sort(points.begin() , points.end());
+    Normalization norm(points);
+    norm.compute(out);
+    out.display();
+    out.save();
+}
+
+
 int main() {
-//    auto const path2 = "/home/student/Pobrane/nowe.bmp"s;
-//    auto const path = "/home/student/Pobrane/simpleColor.png"s;
-//    auto const path = "/home/student/Desktop/saturn.png"s;
-//    auto const path1 = "/home/student/Desktop/bag.png"s;
-//    auto const path1 = "/home/student/Desktop/szara.jpg"s;
-//    auto const path2 = "/home/student/Desktop/czarna.jpg"s;
-//    auto const path3 = "/home/student/Desktop/kolorowa.jpg"s;
-    auto const path2 = "/home/student/Desktop/dziury.bmp"s;
-//    auto const path = "/home/student/Desktop/circles.png"s;
-//    auto const path = "/home/student/Pobrane/wzorek.bmp"s;
-    auto const path1 = "/home/student/Desktop/pout.tif"s;
-//    auto const path = "/home/student/Desktop/AT3_1m4_02.tif"s;
-//    auto const path1 = "/home/student/Desktop/blobs.png"s;
-//    auto const path1 = "/home/student/Desktop/onion.png"s;
-//    auto const path3 = "/home/student/Desktop/kolorki.png"s;
-//    auto const path1 = "/home/student/CLionProjects/ImageProcessing/Images/guinea.jpg"s;
-    auto im1 = Image::factory(path1, "infile"s).value_or(Image());
-    auto im2 = Image::factory(path2, "infile"s).value_or(Image());
-//    auto im3 = Image::factory(path3, "infile"s).value_or(Image());
-//    auto im4 = Image::factory(path4, "infile"s).value_or(Image());
-
-//
-//    Kernel k = KernelGenerator::generate(5);
-//    KernelGenerator::display(k);
-//
-    im1.display();
-//    im2.display();
-//    im3.display();
-//    im4.display();
-//
-    Image out1(im1, "open1_15"s);
-    Image out2(im2, "open2_15"s);
-////
-    Image out3(im1, "open1_1"s);
-    Image out4(im2, "open2_1"s);
-
-//    Image out1(1, im1.getWidth(),im1.getHeight(), "entropy1_9");
-//    Image out2(1, im2.getWidth(),im2.getHeight(), "entropy2_9");
-//    Image out3(1, im3.getWidth(),im3.getHeight(), "entropy3_9");
-//    Image out4(1, im4.getWidth(),im4.getHeight(), "entropy7_3");
-
-//    auto out2 = Image::factory(path2, "entropy").value_or(Image());
-//    Image out2(1, im.getWidth(), im.getHeight(),  "entropy");
-//    for(int i = 1 ; i < 15 ; ++i){
-//        std::cout<< "Promien " << i << "\n";
-//        Kernel k = KernelGenerator::generate(i);
-//        KernelGenerator::display(k);
-//        std::cout<< "\n\n";
-//    }
-//    Kernel k = KernelGenerator::generate(15);
-//    auto se = cv::getStructuringElement(2,cv::Size(31,31),cv::Point(15,15));
-//    std::memcpy(k.data.data() ,se.data, se.elemSize()*se.rows*se.cols);
-//
-//    KernelGenerator::display(k);
-//    Erosion::compute(out,k);
-//    out.display();
-//    Dilation::compute(out, k);
-//    out.display();
-//    std::cout << "\n";
-    Opening opening15(15);
-    opening15.compute(out1);
-    opening15.compute(out2);
-    out1.display();
-    out2.display();
-
-    Opening opening1(1);
-    opening1.compute(out3);
-    opening1.compute(out4);
-    out3.display();
-    out4.display();
-
-//
-//    Erosion e(15);
-//    e.compute(out);
-//
-//    Dilation d(15);
-//    d.compute(out);
-//    out.display();
-////
-//    Erosion e2(10);
-//    e2.compute(out4);
-//    Dilation d2(10);
-//    d2.compute(out4);
-//    out4.display();
-
-//
-//    Filling::compute(out1);
-//    Filling::compute(out2);
+    std::cout << "\t\t --- Przetwarzanie obrazow ---\n";
+    std::cout << "Wybierz z dostepnych przeksztalcen: \n";
+    std::cout << "\t1. Normalizacja względem minimum 3 punktow \n";
+    std::cout << "\t2. Filtracja entropii w zadanym oknie\n";
+    std::cout << "\t3. Otwarcie kolowym elementem strukturalnym o zadanym promieniu\n";
+    std::cout << "\t4. Wypelnianie otworow za pomoca rekonstrukcji\n";
 
 
+    enum operation{ NORM = 1, ENTROPY, OPEN, FILL} op;
+    operation op1 = NORM;
 
-//    Normalization::pointsContainer points;
-//    points.push_back(std::make_pair(0.5*255,0.1*255));
-//    points.push_back(std::make_pair(0.6*255,0.3*255));
-//    points.push_back(std::make_pair(0.75*255,0.5*255));
-//    points.push_back(std::make_pair(0.8*255,0.75*255));
-//
-//    std::sort(points.begin() , points.end());
-//    Normalization norm(points);
-//    norm.compute(out1);
-//    norm.compute(out2);
-//    norm.compute(out3);
+    bool var = true;
+    while(var) {
+        std::cout<< "Podaj numer przeksztalcenia: ";
+        std::cin >> reinterpret_cast<int&>(op);
+        switch (op) {
+            case NORM:
+                normalization();
+                var = false;
+                break;
+            case ENTROPY:
+                entropy();
+                var = false;
+                break;
+            case OPEN:
+                opening();
+                var = false;
+                break;
+            case FILL: {
+                filling();
+                var = false;
+                break;
+            }
+            default:  std::cout << "Wybierz wartosc od 1 do 4\n";
+        }
+    }
 
-//    out1.display();
-//    out2.display();
-//    out3.display();
-//
 
-
-//
-//    ImageEntropy::compute(im1, out1,9);
-//    ImageEntropy::compute(im2, out2, 9);
-//    ImageEntropy::compute(im3, out3, 9);
-//    ImageEntropy::compute(im4, out4,3);
-
-
-//    out1.display();
-//    out2.display();
-//    out3.display();
-//    out4.display();
-//
-    out1.save();
-    out2.save();
-    out3.save();
-    out4.save();
     cv::waitKey(0);
-
-
 
     return 0;
 }
